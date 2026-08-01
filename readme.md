@@ -2,7 +2,7 @@ DAX — Dual Address eXtension
 
 Delta‑Merged Memory Architecture (DMM)
 
-A new memory‑centric compute paradigm designed by Thomas
+A proprietary memory‑centric compute paradigm designed by Thomas
 
 
 
@@ -12,11 +12,43 @@ DAX (Dual Address eXtension) is a formal ISA extension and architectural model b
 
 
 
-This repository serves as the official documentation hub for DAX and DMM.
+This repository serves as the official documentation and test‑only distribution for DAX and DMM.
 
-It contains specifications, diagrams, explanations, and design notes only.
 
-No simulators, test harnesses, or runnable code are included.
+
+It contains:
+
+
+
+Specifications
+
+
+
+Diagrams
+
+
+
+Explanations
+
+
+
+Design notes
+
+
+
+Test‑ready RTL
+
+
+
+FPGA integration files
+
+
+
+Simulation harness
+
+
+
+It does not contain production software, compilers, or full hardware implementations.
 
 
 
@@ -38,183 +70,19 @@ Effective Value:
 
 
 
-𝑉
+Code
 
-=
-
-𝑀
-
-⊕
-
-𝐷
+V = M ⊕ D
 
 Writes update only the delta region:
 
 
 
-𝐷
-
-′
-
-=
-
-𝑀
-
-⊕
-
-𝑉
-
-new
-
-This creates a compressed, reversible, high‑bandwidth memory model ideal for AI systems, simulations, multi‑agent reasoning, and speculative execution.
-
-
-
-Why This Repository Exists
-
-This GitHub repository is not a codebase.
-
-It is a technical reference for:
-
-
-
-ISA documentation
-
-
-
-architectural design
-
-
-
-memory model theory
-
-
-
-diagrams and conceptual layouts
-
-
-
-integration notes for future systems
-
-
-
-research‑grade explanations
-
-
-
-Everything here is meant to be read, studied, and referenced.
-
-
-
-Key Concepts
-
-Delta‑Merged Memory (DMM)
-
-A dual‑address memory model where values are reconstructed from:
-
-
-
-canonical master data
-
-
-
-sparse delta overlays
-
-
-
-DAX ISA Extension
-
-Two new instructions:
-
-
-
-LDX — Delta Load
-
 Code
 
-LDX rt, (rm, rd)
+D' = M ⊕ V\_new
 
-Loads M XOR D.
-
-
-
-STX — Delta Store
-
-Code
-
-STX rs, (rm, rd)
-
-Stores only the delta.
-
-
-
-Transparent Delta Mode
-
-Optional CSR flag enabling automatic delta merging for normal loads/stores.
-
-
-
-Repository Contents
-
-This repo includes:
-
-
-
-Full DAX ISA specification
-
-
-
-Full DMM architectural whitepaper
-
-
-
-Diagrams and conceptual models
-
-
-
-Design notes and rationale
-
-
-
-Integration concepts for future hardware
-
-
-
-Documentation for researchers and implementers
-
-
-
-This repo does not include:
-
-
-
-code
-
-
-
-simulators
-
-
-
-test harnesses
-
-
-
-compilers
-
-
-
-hardware models
-
-
-
-emulators
-
-
-
-Use Cases
-
-DAX and DMM are designed for:
+This creates a compressed, reversible, high‑bandwidth memory model ideal for:
 
 
 
@@ -242,11 +110,259 @@ high‑bandwidth compute architectures
 
 
 
-Status
+Repository Contents
 
-DAX is an active research architecture.
+Included
 
-This repository documents the design as it evolves.
+Full DAX ISA specification
+
+
+
+Full DMM architectural whitepaper
+
+
+
+Diagrams and conceptual models
+
+
+
+Design notes and rationale
+
+
+
+Integration concepts for future hardware
+
+
+
+RTL for testing
+
+
+
+FPGA top‑level for testing
+
+
+
+AXI‑Lite control block
+
+
+
+Simulation testbench
+
+
+
+U55C constraint files
+
+
+
+Not Included
+
+Production code
+
+
+
+Compilers
+
+
+
+Simulators
+
+
+
+Emulators
+
+
+
+Commercial hardware models
+
+
+
+Testing Instructions (FPGA + Simulation)
+
+This repository includes test‑only RTL for validating the DAX memory model.
+
+
+
+1\. Simulation
+
+Use sim/tb\_dax\_meu.sv:
+
+
+
+Run in Vivado or any SV simulator
+
+
+
+Confirms LDX/STX behavior
+
+
+
+Confirms delta‑merged memory correctness
+
+
+
+2\. FPGA (Xilinx Alveo U55C)
+
+The fpga/ folder contains:
+
+
+
+top.sv
+
+
+
+AXI‑Lite control block
+
+
+
+U55C XDC constraints
+
+
+
+To run on hardware:
+
+
+
+Create a Vivado project
+
+
+
+Select Alveo U55C
+
+
+
+Add RTL from rtl/
+
+
+
+Add constraints from fpga/constraints/
+
+
+
+Build AXI‑Lite + PCIe block design
+
+
+
+Generate bitstream
+
+
+
+Load onto U55C
+
+
+
+Use the Windows host test program to trigger:
+
+
+
+LDX
+
+
+
+STX
+
+
+
+address updates
+
+
+
+delta writes
+
+
+
+merged value reads
+
+
+
+This validates the full DAX pipeline.
+
+
+
+Evaluation‑Only Notice
+
+This repository is provided strictly for evaluation, testing, and academic review.
+
+
+
+It is not licensed for:
+
+
+
+commercial use
+
+
+
+integration into products
+
+
+
+redistribution
+
+
+
+modification
+
+
+
+derivative works
+
+
+
+hardware manufacturing
+
+
+
+software compilation
+
+
+
+research outside your organization
+
+
+
+Commercial Licensing Required
+
+DAX, DMM, and all associated designs are proprietary intellectual property owned by Thomas.
+
+
+
+Any use beyond evaluation — including but not limited to:
+
+
+
+commercial deployment
+
+
+
+hardware implementation
+
+
+
+software integration
+
+
+
+research publication
+
+
+
+derivative architecture design
+
+
+
+simulator development
+
+
+
+compiler support
+
+
+
+requires a paid commercial license and written permission from the author.
+
+
+
+Contact information for licensing can be provided upon request.
 
 
 
